@@ -1,15 +1,15 @@
-name: zb-cailapub
+name: weather-currency-bot
+version: 1.0.0
 
-entryPoint: main.sc
+dependencies: []
 
-botEngine: v2
-language: ru
+channels:
+  chat-api:
+    channel: chat-api
+    publish: auto
 
-tests:
-  include:
-    - test.xml
+scripts:
+  main:
+    source: src/main.sc
 
-nlp:
-  intentNoMatchThresholds:
-    phrases: 0.2
-    patterns: 0.2
+tests: test/test.xml
