@@ -1,23 +1,33 @@
-require: slotfilling/slotFilling.sc
-  module = sys.zb-common
+patterns:
+    $weather = (погода|погодка|прогноз погоды|какая погода|что на улице)
+    $currency = (курс валют|курс доллара|курс евро|сколько стоит доллар|сколько стоит евро|доллар|евро)
+
 theme: /
 
     state: Start
-        q!: $regex</start>
-        a: Начнём.
+        q!: *
+        go!: /Hello
 
     state: Hello
-        intent!: /привет
-        a: Привет привет
+        a: Привет! Я бот-помощник. Я могу рассказать о погоде и курсах валют. Спросите меня, например: "Какая погода?" или "Какой курс доллара?"
+        go!: /Wait
 
-    state: Bye
-        intent!: /пока
-        a: Пока пока
+    state: Wait
+        q: $weather
+        go!: /Weather
+        q: $currency
+        go!: /Currency
+        event: noMatch
+        go!: /NoMatch
+
+    state: Weather
+        a: Сейчас за окном +15 градусов, солнечно. Рекомендую взять зонт на всякий случай!
+        go!: /Wait
+
+    state: Currency
+        a: Актуальные курсы ЦБ РФ: USD - 92.50 руб, EUR - 100.20 руб, CNY - 12.80 руб.
+        go!: /Wait
 
     state: NoMatch
-        event!: noMatch
-        a: Я не понял. Вы сказали: {{$request.query}}
-
-    state: Match
-        event!: match
-        a: {{$context.intent.answer}}
+        a: Извините, я не понял ваш запрос. Я умею отвечать только на вопросы о погоде и курсах валют. Попробуйте спросить: "Какая погода?" или "Курс доллара?"
+        go!: /Wait
